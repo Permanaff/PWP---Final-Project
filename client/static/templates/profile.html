@@ -1,0 +1,450 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<style>
+    #main-content {
+        min-height: 293px;
+    }
+
+    a{
+	  cursor: pointer;
+	  
+  }
+
+    #sidebar ul li{
+	  padding:2px 0px;
+  }
+  
+   #sidebar ul li.active> a{
+	   color:#6d6a6a;
+   }
+   
+   
+   #sidebar ul li.active> a i{
+	    color:#6d6a6a;
+   }
+   
+    #sidebar ul li a:hover{
+        color:#939393;
+        background-color:#f3f4f5;
+    }
+
+    #sidebar ul li.dropdown{
+	   position:sticky;
+   }
+   
+   
+     #sidebar ul.component{
+		 padding:20px 0px;  
+	 }
+   
+   #sidebar ul li a{
+	   padding:5px 10px 5px 20px;
+	   line-height:30px;
+	   font-size:15px;
+	   position:relative;
+	   font-weight:400;
+	   display:block;
+	   color:#777777;
+	   text-transform:capitalize;
+   }
+   
+      #sidebar ul li a i{
+		  position:relative;
+		  margin-right:10px;
+		  top:6px;
+	  }
+
+      
+	   .dropdown-menu li > a{
+		  font-size:13px;
+		  padding:10px 20px;
+		  margin:0 5px;
+		  border-radius:2px;
+		  font-weight:400;
+		  transition:all 150ms linear;
+	  }
+	  
+	  
+	  .dropdown-menu li > a .material-symbols-outlined{
+		  position:relative;
+		  top:3px;
+		  color:#777;
+		  margin-right:6px;
+		  font-size:16px;
+		  
+	  } 
+
+      .custom-text { 
+        font-size: 14px;
+      }
+
+
+
+</style>
+{%endblock%}
+
+{%block body%}
+<input type="hidden" value="{{user_id}}" name="user_id" id="user_id">
+<div class="container mt-5" id="main-content">
+    <div class="row d-flex">
+        <div class="col-1"></div>
+        <!-- Side Bar -->
+        <div class="col-2">
+            <div class="card shadow border-0" style="height: 30rem;">
+                <div class="card-content">
+                    <div class="card-header mt-3" style="background-color: white;">
+                        <div class="row">
+                            <div class="col-auto align-self-center" id="image-sidebar"></div>
+                            <div class="col-auto align-self-center" id="nama-sidebar"></div>
+                        </div>
+
+                    </div>
+                    <div class="card-body" id="sidebar">
+                        <ul class="list-unstyled component m-0">
+                            <li class="dropdown active">
+                                <a href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle active"><i class="material-symbols-outlined">person</i>Profil Anda
+                                </a>
+            
+                                <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+                                    <li><a href="/account/profil-saya" id="profil-collapse">Profil</a></li>
+                                    <li><a href="/account/alamat-saya" id="alamat-collapse" class="active">Alamat</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="/cart" class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined"><span class="material-symbols-outlined">
+                                    shopping_cart
+                                    </span></i>Keranjang</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-8 px-5" id="content-main">
+
+            <!------------ CARD PROFILE ------------>
+            <div class="card" id="content-profil-saya">
+                <div class="card-content">
+                    <div class="card-header" style="background-color: white;">
+                        <p class="fs-5 fw-bold mb-0" >Profil Saya</p>
+                        <p  style="font-size: 14px;">Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row ms-2">
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-3 custom-text">
+                                        <p class="text-secondary text-end">Username</p>
+                                    </div>
+                                    <div class="col-4" id="input-username">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 custom-text">
+                                    <div class="col-3">
+                                        <p class="text-secondary text-end">Nama</p>
+                                    </div>
+                                    <div class="col-md-8" >
+                                        <input class="form-control rounded-0" type="text" name="inputName" id="inputName">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 custom-text">
+                                    <div class="col-3">
+                                        <p class="text-secondary text-end">Email</p>
+                                    </div>
+                                    <div class="col-4" id="input-email">
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-3 custom-text">
+                                    <div class="col-3">
+                                        <p class="text-secondary text-end">Nomor Telepon</p>
+                                    </div>
+                                    <div class="col-4" id="input-telp"></div>
+                                </div>
+                                
+                                <div class="row mt-3 custom-text">
+                                    <div class="col-3">
+                                        <p class="text-secondary text-end">Tanggal Lahir</p>
+                                    </div>
+                                    <div class="col-md-4 d-flex">
+                                        <select class="form-select rounded-0" id="day" name="day" style="width: 125px;"></select>
+                                        <select class="form-select rounded-0 ms-2" id="month" style="width: 125px;"></select>
+                                        <select class="form-select rounded-0 ms-2" id="year" style="width: 125px;"></select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3"></div>
+                                    <div class="col-9">
+                                        <p id="validationMessage" class="text-danger" style="font-size: 13px;"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mt-3 mb-5 d-flex">
+                                    <div class="col-3"></div>
+                                    <div class="col-md-8">
+                                        <button id="btn-save" type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="col-auto text-center">
+                                <div id="profile-image"></div>
+                                
+                                <div class="mt-3">
+                                    <input type="file" class="form-control visually-hidden" id="inputImage" name="image">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('inputImage').click()">Pilih Foto</button>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------------ CARD PROFILE END ------------>
+
+
+        </div>
+       
+        <div class="col-1"></div>
+    </div>
+</div>  
+
+{%endblock%}
+
+{%block scripts%}
+
+<script>
+    const user_id = $('#user_id').val()
+    $(document).ready(function() {
+        
+        setSidebarProfil()
+        showProfilSaya(user_id)
+ 
+        // save change profil
+        $('#btn-save').click(function() {
+            saveProfileChange(user_id)
+        });
+
+        // handle input profile image untuk menampilkan preview gamabr
+        $("#inputImage").on('change', function() {
+            const fileInput = $('#inputImage')[0].files[0]; 
+
+            if (fileInput) { 
+                var reader = new FileReader();
+                console.log(fileInput)
+                reader.onload = function (e) {
+                    console.log(12)
+                    $('#profile-image').empty();
+                    $('#profile-image').append('<img class="rounded-circle" src="' + e.target.result + '" alt="profile-image" style="width: 12rem;">');
+                };
+
+                reader.readAsDataURL(fileInput); 
+            }
+        });
+    });
+
+    // Untuk Set Data Profile di sidebar
+    function setSidebarProfil() {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-profile-data/' + user_id,
+            method: 'get',
+            dataType: 'json',
+            success: function (response) {
+                var userData = response.user[0];    
+                $('#image-sidebar').empty()
+                $('#nama-sidebar').empty()
+
+                $('#image-sidebar').append('<img class="rounded-circle" src="/static/images/profile_image/'+ userData.profile_image +'" alt="profile-image" style="width: 3rem;">')
+                $('#nama-sidebar').append('<p class="fw-semibold" style="font-size: 14px;">'+ userData.nama +'</p>')
+            },
+            error: function (error) {
+            }
+        });
+    }
+        
+
+    // Fungsi Menampilkan Content/Card Profile
+    function showProfilSaya(user_id) { 
+        $('#content-profil-saya').show()
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-profile-data/' + user_id,
+            method: 'get',
+            dataType: 'json',
+            success: function (response) {
+                var userData = response.user[0];
+                const sensorTelpone = nomorTelepon => '*'.repeat(Math.max(0, nomorTelepon.length - 2)) + nomorTelepon.slice(-2);
+                $('#input-username').empty()
+                $('#input-email').empty()
+                $('#input-telp').empty()
+                $('#profile-image').empty()
+
+                $('#profile-image').append('<img class="rounded-circle" src="/static/images/profile_image/'+ userData.profile_image +'" alt="profile-image" style="width: 12rem;">')
+
+                $('#input-username').append('<p class="ms-2">'+ userData.username +'</p>') ; 
+                $('#inputName').val(userData.nama +' '+ userData.nama_belakang);
+                $('#input-email').append(userData.email);
+                $('#input-telp').append(sensorTelpone(userData.no_telp));
+
+
+                var daySelect = $('#day');
+                var monthSelect = $('#month');
+                var yearSelect = $('#year');
+
+                for (var i = 1; i <= 31; i++) {
+                    daySelect.append($('<option>', {
+                        value: i,
+                        text: i
+                    }));
+                }
+
+                var months = [
+                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                ];
+
+                for (var i = 0; i < months.length; i++) {
+                    monthSelect.append($('<option>', {
+                        value: i + 1,
+                        text: months[i]
+                    }));
+                }
+
+                var currentYear = new Date().getFullYear();
+                for (var i = currentYear; i >= currentYear-100; i--) {
+                    yearSelect.append($('<option>', {
+                        value: i,
+                        text: i
+                    }));
+                }
+                
+                var birthDate = new Date(userData.ttl);
+                daySelect.val(birthDate.getDate());
+                monthSelect.val(birthDate.getMonth() + 1); // Months are zero-based
+                yearSelect.val(birthDate.getFullYear());
+
+                $('#day, #month, #year').on('change', validateBirthdate);
+            },
+            error: function (error) {
+                console.error('Gagal mengupdate produk. Error:', error);
+                
+            }
+        });
+        // Untuk Validasi Apakah Tanggal Valid (tidak lebih dari tanggal sekarang)
+        function validateBirthdate() {
+            var daySelect = $('#day').val();
+            var monthSelect = $('#month').val();
+            var yearSelect = $('#year').val();
+
+            var selectedDate = new Date(`${yearSelect}-${monthSelect}-${daySelect}`);
+            var currentDate = new Date();
+
+            var validationMessage = $('#validationMessage');
+
+            if (selectedDate > currentDate) {
+                validationMessage.text('Tanggal lahir tidak valid. Harap pilih tanggal lahir yang benar.');
+                $('#btn-save').attr('disabled', true)
+            } else {
+                validationMessage.text('');
+                $('#btn-save').attr('disabled', false)
+            }
+        }
+        // Untuk Membuat Data Select Tanggal LAhir
+        function birthDateSelect() {
+            document.addEventListener('DOMContentLoaded', function () {
+                function generateOptions(start, end, selectedValue, elementId) {
+                    const dropdown = document.getElementById(elementId);
+                    if (!dropdown) {
+                        console.error(`Element dropdown dengan id '${elementId}' tidak ditemukan.`);
+                        return;
+                    }
+                    dropdown.innerHTML = ''; 
+
+                    for (let i = start; i <= end; i++) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.text = i;
+                        option.selected = i === selectedValue;
+
+                        dropdown.add(option);
+                    }
+                }
+                function isValidDate(day, month, year) {
+                    const inputDate = new Date(`${year}-${month}-${day}`);
+                    const currentDate = new Date();
+
+                    return !isNaN(inputDate) && inputDate <= currentDate;
+                }
+                function validateDate() {
+                    const day = document.getElementById('day').value;
+                    const month = document.getElementById('month').value;
+                    const year = document.getElementById('year').value;
+
+                    const isValid = isValidDate(day, month, year);
+
+                    document.getElementById('validationMessage').innerText = isValid ? '' : 'Tanggal tidak valid';
+                }
+
+                generateOptions(1, 31, users.tanggalLahir.day, 'day');
+                generateOptions(1, 12, users.tanggalLahir.month, 'month');
+                generateOptions(currentYear, currentYear - 100, users.tanggalLahir.year, 'year');
+
+                document.getElementById('day').addEventListener('change', validateDate);
+                document.getElementById('month').addEventListener('change', validateDate);
+                document.getElementById('year').addEventListener('change', validateDate);
+            });
+        }   
+    }
+
+    // Untuk Menyimpan perubahan data profil
+    function saveProfileChange(user_id) {
+        const userData = new FormData();
+        const fileInput = $('#inputImage')[0].files[0];
+
+        const tanggal_lahir = $('#year').val() + '-' + $('#month').val().padStart(2, '0') + '-' + $('#day').val().padStart(2, '0');
+        var fullName = $('#inputName').val().split(' ');
+        const firstName = fullName[0];
+        const lastName = fullName.slice(1).join(' ');
+
+        if (fileInput) {
+            userData.append('image', fileInput);
+        }
+
+        userData.append('firstName', firstName);
+        userData.append('lastName', lastName);
+        userData.append('tanggallahir', tanggal_lahir);
+
+        for (var pair of userData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
+
+        
+        $.ajax({
+            url: 'http://127.0.0.1:3000/update-profile-data/' + user_id,
+            method: 'PUT',
+            data: userData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#content-profil-saya').hide()
+                $('#content-profil-saya').show()
+                setSidebarProfil()
+                showProfilSaya(user_id)
+                alert("Berhasil Mengubah Profil");
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    
+</script>
+
+{%endblock%}

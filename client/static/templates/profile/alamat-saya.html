@@ -1,0 +1,411 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<style>
+    #main-content {
+        min-height: 293px;
+    }
+
+    a{
+	  cursor: pointer;
+	  
+  }
+
+    #sidebar ul li{
+	  padding:2px 0px;
+  }
+  
+   #sidebar ul li.active> a{
+	   color:#6d6a6a;
+   }
+   
+   
+   #sidebar ul li.active> a i{
+	    color:#6d6a6a;
+   }
+   
+    #sidebar ul li a:hover{
+        color:#939393;
+        background-color:#f3f4f5;
+    }
+
+    #sidebar ul li.dropdown{
+	   position:sticky;
+   }
+   
+   
+     #sidebar ul.component{
+		 padding:20px 0px;  
+	 }
+   
+   #sidebar ul li a{
+	   padding:5px 10px 5px 20px;
+	   line-height:30px;
+	   font-size:15px;
+	   position:relative;
+	   font-weight:400;
+	   display:block;
+	   color:#777777;
+	   text-transform:capitalize;
+   }
+   
+      #sidebar ul li a i{
+		  position:relative;
+		  margin-right:10px;
+		  top:6px;
+	  }
+
+      
+	   .dropdown-menu li > a{
+		  font-size:13px;
+		  padding:10px 20px;
+		  margin:0 5px;
+		  border-radius:2px;
+		  font-weight:400;
+		  transition:all 150ms linear;
+	  }
+	  
+	  
+	  .dropdown-menu li > a .material-symbols-outlined{
+		  position:relative;
+		  top:3px;
+		  color:#777;
+		  margin-right:6px;
+		  font-size:16px;
+		  
+	  } 
+
+      .custom-text { 
+        font-size: 14px;
+      }
+
+
+</style>
+{%endblock%}
+
+{%block body%}
+<input type="hidden" value="{{user_id}}" name="user_id" id="user_id">
+<div class="container mt-5" id="main-content">
+    <div class="row d-flex">
+        <div class="col-1"></div>
+        <!-- Side Bar -->
+        <div class="col-2">
+            <div class="card shadow border-0" style="height: 30rem;">
+                <div class="card-content">
+                    <div class="card-header mt-3" style="background-color: white;">
+                        <div class="row">
+                            <div class="col-auto align-self-center" id="image-sidebar"></div>
+                            <div class="col-auto align-self-center" id="nama-sidebar"></div>
+                        </div>
+
+                    </div>
+                    <div class="card-body" id="sidebar">
+                        <ul class="list-unstyled component m-0">
+                            <li class="dropdown active">
+                                <a href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle active"><i class="material-symbols-outlined">person</i>Profil Anda
+                                </a>
+            
+                                <ul class="collapse show list-unstyled menu" id="homeSubmenu1">
+                                    <li><a href="/account" id="profil-collapse">Profil</a></li>
+                                    <li><a href="/account/alamat-saya" id="alamat-collapse" class="active">Alamat</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="/cart" class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined"><span class="material-symbols-outlined">
+                                    shopping_cart
+                                    </span></i>Keranjang</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-8 px-5" id="content-main">
+            <!------------ CARD DAFTAR ALAMAT ------------>
+            <div class="card" id="content-alamat-saya">
+                <div class="card-content">
+                    <div class="card-header" style="background-color: white;">
+                        <div class="row justify-content-between">
+                            <div class="col-4">
+                                <h3 class="fs-5 fw-bold mt-1" id="alamat-saya">Alamat Saya</h3>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center">
+                                <button class="btn btn-danger ms-5" onclick="tambahAlamat()">
+                                    <span><i class="fa-solid fa-plus" style="color: #ffffff;"></i></span> Tambah Alamat
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container" id="content-alamat"></div>
+                </div>
+            </div>
+            <!------------ CARD DAFTAR ALAMAT END ------------>
+
+        </div>
+       
+        <div class="col-1"></div>
+    </div>
+</div>  
+
+
+
+<!------------ MODAL ------------>
+<!----- MODAL TAMBAH ALAMAT ----->
+<div class="modal fade" id="modal-tmbh-alamat" tabindex="-1" aria-labelledby="modal-tmbh-alamat" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+                <div class="modal-body">
+                    <h5 class="fs-5 fw-bold mb-4">Alamat Baru</h5>
+                        <div class="mb-3 mt-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Nama lengkap" id="inpNama" name="inpNama">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Nomor telepon" id="inpTelp" name="inpTelp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <select class="form-select  rounded-0 provinsi" id="inpProvinsi"  name="inpProvinsi" onchange="getKota()">
+                                <option>Provinsi</option>
+                            </select>   
+                        </div>
+                        <div class="mt-4">
+                            <select class="form-select  rounded-0 kota"  id="inpKota" name="inpKota" onchange="getKecamatan()">
+                                <option>Kota/Kabupaten</option>
+                            </select>  
+                        </div>
+                        <div class="mt-4">
+                            <select class="form-select  rounded-0 kecamatan" id="inpKec" name="inpKec">
+                                <option>Kecamatan</option>
+                            </select>  
+                        </div>
+
+                        <div class="mt-4">
+                            <textarea name="inpAlamat" id="inpAlamat" cols="55" rows="3" placeholder="Detail Alamat"></textarea>
+                        </div>
+                        <div class="mt-4">
+                            <input type="text" class="form-control" placeholder="Kode pos" id="inpKode_pos" name="inpKode_pos">
+
+                        </div>
+                    </div>
+            <div class="modal-footer">
+                <button type="submit" id="btn-submit-alamat" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>  
+    </div>
+</div>  
+<!----- MODAL TAMBAH ALAMAT END ----->
+
+<!------------ MODAL END ------------>
+
+{%endblock%}
+
+{%block scripts%}
+
+<script>
+    const user_id = $('#user_id').val()
+    $(document).ready(function() {
+        setSidebarProfil()
+        showAlamatUser(user_id)
+    });
+
+    // Untuk Set Data Profile di sidebar
+    function setSidebarProfil() {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-profile-data/' + user_id,
+            method: 'get',
+            dataType: 'json',
+            success: function (response) {
+                var userData = response.user[0];    
+                $('#image-sidebar').empty()
+                $('#nama-sidebar').empty()
+
+                $('#image-sidebar').append('<img class="rounded-circle" src="/static/images/profile_image/'+ userData.profile_image +'" alt="profile-image" style="width: 3rem;">')
+                $('#nama-sidebar').append('<p class="fw-semibold" style="font-size: 14px;">'+ userData.nama +'</p>')
+            },
+            error: function (error) {
+            }
+        });
+    }
+        
+
+
+
+    // Untuk menampilkan Daftar Alamat
+    function showAlamatUser(user_id) { 
+        $('#content-profil-saya').hide()
+        $('#content-alamat-saya').show()
+        $('#content-alamat').empty()
+
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-alamat-user/' + user_id,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                const container = $('#content-alamat')
+                $.each(response.alamat, function (index, alamat) {
+                    let  content = ''
+
+                    content += `    
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <p class="fw-bold">
+                                        ${alamat.nama_lengkap} 
+                                        <span class="fw-light">| ${alamat.no_telp}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="text-secondary" id="alamat-test">${alamat.jalan}, ${alamat.kecamatan}, ${alamat.kota}, ${alamat.provinsi}, ${alamat.kode_pos}</p>
+                                </div>
+                            </div>
+                            <div class="col-2 d-flex align-items-center justify-content-between text-end">
+                                <a class="ms-auto ms-5" href="#" style="font-size: 14px; color: black;" id="ubahButton" onclick=ubahAlamat(${alamat.id_alamat})>Ubah</a>
+                            </div>
+                        </div>
+                        <hr class="my-2">
+                    `;
+                    container.append(content)
+
+                });
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    
+    function ubahAlamat(alamat_id) { 
+        alert("Ubah Alamat ID : "+ alamat_id)
+    }
+
+
+
+
+    function tambahAlamat() {
+        $('#modal-tmbh-alamat').modal('show');
+
+        let provinsi = $('#inpProvinsi');
+        let kota = $('#inpKota');
+
+        // ADD OPTION ON SELECT
+        getProvinsi('inpProvinsi');
+        provinsi.on('change', function () {
+            const id_provinsi = provinsi.val();
+            getKota(id_provinsi, '', 'inpKota');
+        });
+        kota.on('change', function () {
+            const id_kota = kota.val();
+            getKecamatan(id_kota, 'inpKec');
+        });
+
+       
+
+        $('#btn-submit-alamat').on('click', function () {
+            let nama_lengkap = $('#inpNama').val() 
+            let no_telp = $('#inpTelp').val()
+            let jalan = $('#inpAlamat').val() 
+            let prov = provinsi.val() 
+            let city = kota.val() 
+            let kec = $('#inpKec').val()
+            let kode_pos = $('#inpKode_pos').val()
+
+            console.log('kota'+city)
+
+             // SAVE 
+            $.ajax({
+                url: 'http://127.0.0.1:3000/add-alamat',
+                method : 'POST',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({ nama_lengkap:nama_lengkap, user_id: user_id, no_telp:no_telp, jalan: jalan, provinsi : prov, kota: city, kecamatan:kec, kode_pos:kode_pos }),
+                success: function (response) {
+                    $('#modal-tmbh-alamat').modal('hide')
+                    showAlamatUser(user_id)
+                }
+            });
+
+        });
+       
+
+
+
+    }
+
+    // Function ambil data provinsi
+    function getProvinsi(elemenId) {
+        fetch('http://127.0.0.1:3000/get-provinsi')
+            .then(response => response.json())
+            .then(data => {
+                populateDropdownEdit(elemenId, data, 'Pilih Provinsi');
+            })
+            .catch(error => console.error('Error:', error));
+            
+    }
+
+    // Function ambil data kota
+    function getKota(selectedProvinsi, selectedKota, elemenId) {
+        if (!selectedProvinsi) {
+            return;
+        }
+        fetch(`http://127.0.0.1:3000/get-kota/${selectedProvinsi}`)
+            .then(response => response.json())
+            .then(data => {
+                if (selectedKota) {
+                    populateDropdownEdit(elemenId, data, 'Pilih Kota');
+                    $('#' + elemenId).val(selectedKota); 
+                }
+                populateDropdownEdit(elemenId, data, 'Pilih Kota');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+
+
+    // Function ambil data kecamatan
+    function getKecamatan(selectedKota, elemenId) {
+        if (!selectedKota) {
+            return;
+        }
+        fetch(`http://127.0.0.1:3000/get-kecamatan/${selectedKota}`)
+            .then(response => response.json())
+            .then(data => {
+                populateDropdownEdit(elemenId, data, 'Pilih Kecamatan');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function add option on select provinsi, kota, kecamatan
+    function populateDropdownEdit(dropdownId, data, defaultText) {
+        const dropdown = document.getElementById(dropdownId);
+        dropdown.innerHTML = '';
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.text = defaultText;
+        dropdown.add(defaultOption);
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.id;
+            option.text = item.name;
+            dropdown.add(option);
+        });
+
+
+    }
+
+
+
+
+
+    
+</script>
+
+{%endblock%}
