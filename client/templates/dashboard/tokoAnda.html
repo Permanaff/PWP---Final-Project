@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <link rel="icon" type="image/x-icon" href="\static\images\logo\icon.ico">
+    
+    <!--google material icon-->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+        .btn-custom{
+            color: black ;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-custom:active,
+        .btn-custom:focus{
+            outline: none;
+            box-shadow: none;
+            transform: scale(1);
+        }
+
+        .btn-custom:hover{
+            color: #B31312  ;
+        }
+        
+
+        .fixed-footer {
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .disabled-link {
+        pointer-events: none;
+        }
+
+        .star-rate {
+            color: gold;
+        }
+
+        .custom-switch {
+            width: 10px; /* Atur lebar sesuai kebutuhan */
+            height: 20px; /* Atur tinggi sesuai kebutuhan */
+        }
+        .main-content {
+            min-height: 497px;
+        }
+        
+
+    </style>
+
+
+</head>
+<body>
+    <div class="wrapper">
+
+        <div class="body-overlay"></div>
+
+
+         <!-------sidebar-------------->
+         <div id="sidebar">
+            <div class="d-flex justify-content-center">
+                <div class="sidebar-header">
+                    <a href="/"><img src="/static/images/logo/navbar-brand.png" class="img-fluid" style="width: 150px;"></a>
+                </div>
+            </div>
+            <ul class="list-unstyled component m-0">
+                <li class="#">
+                    <a href="/dashboard" class="dashboard "><i class="material-symbols-outlined">dashboard</i>dashboard </a>
+                </li>
+                
+                <li class="active">
+                    <a href="/dashboard/toko-anda"  class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined">store</i>Toko Anda </a>
+                </li>
+
+                <li class="dropdown ">
+                    <a href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle active"><i class="material-symbols-outlined">package_2</i>Produk Anda
+                    </a>
+
+                <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+                    <li><a href="/dashboard/tambah-produk">Tambah Produk</a></li>
+                    <li><a href="/dashboard/daftar-produk" class="active">Daftar Produk</a></li>
+                </ul>
+                </li>
+                
+
+        </div>
+   <!-------sidebar--- End----------->
+
+    <div id="content">
+
+        <!------top-navbar-start-----------> 
+        <div class="top-navbar">
+            <div class="xd-topbar">
+                <div class="row">
+                    <div class="col-2 col-md-1 col-lg-1 order-2 order-md-1 align-self-center">
+                    <div class="xp-menubar">
+                        <span class="material-symbols-outlined text-white">signal_cellular_alt</span>
+                    </div>
+                    </div>
+                    
+                    <div class="col-md-5 col-lg-3 order-3 order-md-2">
+                        <div class="xp-searchbar">
+                            <form>
+                            <div class="input-group">
+                                <input type="search" class="form-control"
+                                placeholder="Search">
+                                <div class="input-group-append">
+                                    <button class="btn" type="submit" id="button-addon2">Go
+                                    </button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-10 col-md-6 col-lg-8 order-1 order-md-3">
+                        <div class="xp-profilebar text-right d-flex justify-content-end">
+                            <nav class="navbar p-0">
+                                <ul class="nav flex-row ml-auto">
+                                    <li class="dropdown nav-item active">
+                                        <a class="nav-link" href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                            <span class="material-symbols-outlined">notifications</span>
+                                            <span class="notification">4</span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">You Have 4 New Messages</a></li>
+                                            <li><a class="dropdown-item" href="#">You Have 4 New Messages</a></li>
+                                            <li><a class="dropdown-item" href="#">You Have 4 New Messages</a></li>
+                                            <li><a class="dropdown-item" href="#">You Have 4 New Messages</a></li>
+                                        </ul>
+                                    </li>
+                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                            <span class="material-symbols-outlined">question_answer</span>
+                                        </a>
+                                    </li>
+                                
+                                    <li class="dropdown nav-item">
+                                        <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                                            <img src="/static/images/placeholder/placeholder-image.png" style="width:40px; border-radius:50%;" alt="User Avatar">
+                                            <span class="xp-user-live"></span>
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">
+                                                <span class="material-symbols-outlined">person_outline</span>
+                                                Profile
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#">
+                                                <span class="material-symbols-outlined">settings</span>
+                                                Settings
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#">
+                                                <span class="material-symbols-outlined">logout</span>
+                                                Logout
+                                            </a></li>
+                                        </ul>
+                                    </li>
+                                </ul>  
+                            </nav>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    
+                </div>
+                <div class="xp-breadcrumbbar text-center">
+                    <h4 class="page-title">Dashboard</h4>
+                </div>
+            </div>
+        </div>
+        <!------top-navbar-end----------->  
+
+        <div class="main-content">
+            <input type="hidden" name="user_id" id="user_id" value="{{ user_id }}"> 
+            <div class=" container d-flex justify-content-center">
+                <div class="container mt-5">
+                    <div class="card shadow-sm border-1 rounded-0" id="profil-seller">
+                        <div class="card-body" id="">
+        
+                            <h3 class="fs-5 fw-bold" id="teks-profil">Toko Saya</h3>
+                            <hr class="mb-1">
+                            <button class="btn btn-custom" id="btnDetail">Detail</button>
+                            <button class="btn btn-custom" id="btnWaktu">Waktu Buka</button>
+                            <hr class="mt-1">
+                            
+                            <!-- Content Card -->
+                            <div class="row" id="contentProfil">
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer mt-5">
+            <div class="container-fluid">
+               <div class="footer-in">
+                  <p class="mb-0">&copy 2023 Urban Store . All Rights Reserved.</p>
+               </div>
+            </div>
+         </footer>
+    </div>
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>      
+	<script src="https://kit.fontawesome.com/fa29c2884b.js" crossorigin="anonymous"></script>
+    <script src="\static\scripts\dashboard.js" defer></script>
+
+    <script>
+        const user_id = $('#user_id').val()
+        $(document).ready(function(){
+            $(".xp-menubar").on('click',function(){
+                $("#sidebar").toggleClass('active');
+                $("#content").toggleClass('active');
+            });
+                
+            $('.xp-menubar,.body-overlay').on('click',function(){
+                $("#sidebar,.body-overlay").toggleClass('show-nav');
+            });
+
+            profile_seller(user_id)
+
+            $('#btnDetail').addClass('border-0').attr("disabled", true)
+    
+            $('#btnDetail').click(function (event) {
+                event.preventDefault();
+                $('#contentProfil').empty();
+                $('#btnDetail').addClass('border-0').attr("disabled", true)
+                $('#btnWaktu').removeClass('border-0').removeAttr("disabled")   
+                profile_seller(user_id)
+            });
+            $('#btnWaktu').click(function (event) {
+                event.preventDefault();
+                $('#contentProfil').empty();
+                $('#btnWaktu').addClass('border-0').attr("disabled", true)
+                $('#btnDetail').removeClass('border-0').removeAttr("disabled")
+                contentWaktuBuka(user_id)
+
+            });
+
+        
+            $(document).on('click', '#seller-name', function() {
+                console.log($('#seller-name').val())
+                $('#save-btn').show()
+            });
+            $(document).on('change', '#imageUpload', function() {
+                $('#save-btn').show()
+                    
+                const fileInput = $('#imageUpload')[0].files[0]; 
+
+                if (fileInput) { 
+                    var reader = new FileReader();
+                    console.log(fileInput)
+                    reader.onload = function (e) {
+                        $('#profile-image').empty();
+                        $('#profile-image').append('<img class="rounded-circle" src="' + e.target.result + '" alt="profile-image" style="width: 12rem;">');
+                    };
+
+                    reader.readAsDataURL(fileInput); 
+                }          
+            });
+            $(document).on('click', '#save-btn', function() {
+                saveEditData()
+            });
+
+	    });
+        
+
+        function profile_seller(user_id) {
+            $.ajax({
+                url: 'http://127.0.0.1:3000/getSeller/'+user_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var contentCard = $('#contentProfil')
+                    var seller = data.sellerProfil[0]
+                    var content = `
+                    <div class="col-8" >
+                        <form class="ms-2" id="formWaktuBuka" method="POST" enctype="multipart/form-data">
+                            <div class="form-group mt-3" id="nama">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <p class="fs-6 text-end text-secondary" for="name">Nama Toko</p>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input  class="form-control rounded-0 name-input" type="text" name="seller-name" value="${seller.name}" id="seller-name">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group mt-4">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <p class="text-end text-secondary" for="name">Alamat</p>
+                                    </div>
+                                    <div class="col-9">
+                                        <p class="">${seller.alamat_lengkap}, ${seller.provinsi}, ${seller.kota}, ${seller.kecamatan}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mt-4">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <p class="text-end text-secondary" for="name">Hari Buka</p>
+                                    </div>
+                                    <div class="col-9" id="daftrWaktuBuka"> 
+                                        <p class="text-secondary fs-6" id="hariBukaList"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3 mb-4" >
+                                <div class="row">
+                                    <div class="col-3"></div>
+                                    <div class="col-sm-9">
+                                        <button type="button" class="btn btn-primary" id="save-btn" style="display: none;">Simpan</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="col-1">
+                        <div class="vertical-line-2 "></div>
+                    </div>
+                    <div class="col-auto text-center">
+                        <div id="profile-image">
+                            <img src="/static/images/profile_image/${seller.profileImage}" class="rounded-circle border border-secondary" alt="Deskripsi gambar" style="width: 12rem" id="img-profile-seller">
+                        </div>
+                        <div class="mt-5">
+                            <input type="file" class="form-control visually-hidden" id="imageUpload" name="image">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('imageUpload').click()">Pilih Gambar</button>
+                        </div>
+                    </div>
+                    `
+                    contentCard.append(content)
+
+                    console.log($('.name-input').val())
+
+                    var hariBukaList = document.getElementById('hariBukaList');
+
+                    var hariBukaArray = JSON.parse(seller.waktu_buka);
+            
+                    var hariBukaHTML = '';
+                    var hariBukaHTML = '<ul class="list-unstyled">';
+                    hariBukaArray.forEach(function(hari) {
+                        hariBukaHTML += '<li class="mb-2">' + hari + ' ' + seller.jamBuka + '-' + seller.jamTutup + '</li>';
+                    });
+                    hariBukaHTML += '</ul>';
+                    hariBukaList.innerHTML = hariBukaHTML;
+
+
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+                });
+        }
+
+
+        function contentWaktuBuka(user_id) {
+            $.ajax({
+                url: 'http://127.0.0.1:3000/getSeller/'+user_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var contentCard = $('#contentProfil')
+                    var seller = data.sellerProfil[0]
+
+                    var content = `
+                    <div class="col-8" >
+                        <form class="ms-2" action="simpanWaktuBuka" method="POST" enctype="multipart/form-data">
+                            <div class="form-group mt-4">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label for="name" style="color: #777795;">Jam Buka</label>
+                                    </div>
+                                    <div class="col-md-6 d-flex">
+                                        <select class="form-select rounded-0" id="time-open" name="time-open" style="width: 500px;"></select>
+                                        <select class="form-select rounded-0 ms-2" id="time-close" name="time-close" style="width: 500px;"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mt-4">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <label for="name" style="color: #777795;">Hari Buka</label>
+                                    </div>
+                                    <div class="col-md-4 d-flex" id="select-hari-buka">
+                                        <!-- Select Hari Buka -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-3 mb-4" >
+                                <div class="row">
+                                    <div class="col"></div>
+                                    <div class="col-sm-10">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                    `
+                    contentCard.append(content)
+                    
+
+                    var jamBuka = $("#time-open");
+                    var jamTutup = $("#time-close");
+                
+                    for (var i = 0; i <= 23; i++) {
+                        var hour = (i < 10) ? '0' + i : i;
+                        jamBuka.append($('<option>',{
+                            value: hour + ":00",
+                            text : hour + ":00" 
+                        }));
+                    }
+                    
+                    for (var i = 0; i <= 23; i++) {
+                        var hour = (i < 10) ? '0' + i : i;
+                        jamTutup.append($('<option>',{
+                            value: hour + ":00",
+                            text : hour + ":00"
+                        }));
+                    }
+        
+
+
+                    var hariBuka = $('#select-hari-buka');
+                    var hari = ['Senin', 'Selasa', 'Rabu', "Kamis", 'Jumat', 'Sabtu', 'Minggu'];
+                
+                    var content = '';
+                
+                    $.each(hari, function(index, value) {
+                        content += `
+                            <input type="checkbox" name="day_open" class="btn-check" value="${value}" id="btn-check-${value}" autocomplete="off">
+                            <label class="btn ms-1 "Sabtu""  for="btn-check-${value}">${value}</label>
+                        `
+                    });
+                
+                    hariBuka.append(content)
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+        
+                }
+                });
+        }
+
+        function saveEditData() { 
+            console.log("save data")
+            var sellerData= new FormData();
+            var fileInput = $('#imageUpload')[0].files[0];
+
+            if (fileInput) {
+                sellerData.append('profile-image', fileInput);
+            }
+            
+            sellerData.append('seller-name', $('#seller-name').val()); 
+            
+            $.ajax({
+            url: 'http://127.0.0.1:3000/update-seller-data/' + user_id,
+            method: 'PUT',
+            data: sellerData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $('#contentProfil').empty();
+                profile_seller(user_id)            
+                alert("Berhasil Mengubah Profil");
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+        }
+        
+    </script>
+</body>
+</html>

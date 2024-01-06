@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <link rel="icon" type="image/x-icon" href="\static\images\logo\icon.ico">
+    
+    <!--google material icon-->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <style>
+        .btn-custom{
+            color: black ;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-custom:active,
+        .btn-custom:focus{
+            outline: none;
+            box-shadow: none;
+            transform: scale(1);
+        }
+
+        .btn-custom:hover{
+            color: #B31312  ;
+        }
+        
+
+        .fixed-footer {
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .disabled-link {
+        pointer-events: none;
+        }
+
+        .star-rate {
+            color: gold;
+        }
+
+        .custom-switch {
+        width: 10px; /* Atur lebar sesuai kebutuhan */
+        height: 20px; /* Atur tinggi sesuai kebutuhan */
+    }
+    </style>
+
+
+</head>
+<body>
+    <div class="wrapper">
+
+        <div class="body-overlay"></div>
+
+         <!-------sidebar-------------->
+        <div id="sidebar">
+            <div class="d-flex justify-content-center">
+                <div class="sidebar-header">
+                    <h3><img src="/static/images/logo/navbar-brand.png" class="img-fluid" style="width: 150px;"></h3>
+                </div>
+            </div>
+            <ul class="list-unstyled component m-0">
+                <li class="#">
+                    <a href="/dashboard" class="dashboard "><i class="material-symbols-outlined">dashboard</i>dashboard </a>
+                </li>
+                
+                <li class="#">
+                    <a href="/dashboard/toko-anda"  class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined">store</i>Toko Anda </a>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle"><i class="material-symbols-outlined">package_2</i>Produk Anda
+                    </a>
+
+                <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+                    <li><a>Tambah Produk</a></li>
+                    <li><a href="/dashboard/daftar-produk" class="dashboard">Daftar Produk</a></li>
+                </ul>
+                </li>
+                
+
+        </div>
+   <!-------sidebar--- End----------->
+
+    <div id="content">
+
+        <!------top-navbar-start-----------> 
+        <div class="top-navbar">
+            <div class="xd-topbar">
+                <div class="row">
+                    <div class="col-2 col-md-1 col-lg-1 order-2 order-md-1 align-self-center">
+                    <div class="xp-menubar">
+                        <span class="material-symbols-outlined text-white">signal_cellular_alt</span>
+                    </div>
+                    </div>
+                    
+                    <div class="col-md-5 col-lg-3 order-3 order-md-2">
+                        <div class="xp-searchbar">
+                            <form>
+                            <div class="input-group">
+                                <input type="search" class="form-control"
+                                placeholder="Search">
+                                <div class="input-group-append">
+                                    <button class="btn" type="submit" id="button-addon2">Go
+                                    </button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-10 col-md-6 col-lg-8 order-1 order-md-3">
+                        <div class="xp-profilebar text-right d-flex justify-content-end">
+                            <nav class="navbar p-0">
+                                <ul class="nav navbar-nav flex-row ml-auto">
+                                <li class="dropdown nav-item active">
+                                    <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                                    <span class="material-symbols-outlined">notifications</span>
+                                    <span class="notification">4</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">You Have 4 New Messages</a></li>
+                                        <li><a href="#">You Have 4 New Messages</a></li>
+                                        <li><a href="#">You Have 4 New Messages</a></li>
+                                        <li><a href="#">You Have 4 New Messages</a></li>
+                                    </ul>
+                                </li>
+                                
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                    <span class="material-symbols-outlined">question_answer</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="dropdown nav-item">
+                                    <a class="nav-link" href="#" data-bs-toggle="dropdown">
+                                        <img src="/static/images/placeholder/placeholder-image.png" style="width:40px; border-radius:50%;"/>
+                                        <span class="xp-user-live"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">
+                                        <span class="material-symbols-outlined">person_outline</span>
+                                        Profile
+                                        </a></li>
+                                        <li><a href="#">
+                                        <span class="material-symbols-outlined">settings</span>
+                                        Settings
+                                        </a></li>
+                                        <li><a href="#">
+                                        <span class="material-symbols-outlined">logout</span>
+                                        Logout
+                                        </a></li>
+                                        
+                                    </ul>
+                                </li>
+                            </nav>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    
+                </div>
+                <div class="xp-breadcrumbbar text-center">
+                    <h4 class="page-title">Dashboard</h4>
+                </div>
+            </div>
+        </div>
+        <!------top-navbar-end-----------> 
+
+        <div class="main-content">
+            <input type="hidden" name="seller_id" id="seller_id" value="{{ seller_id }}"> 
+            <div class="container">
+                <div class="container d-flex justify-content-end mb-3">
+                    <button class="btn btn-success">Tambah Produk</button>
+                </div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">
+                            <input class="form-check-input" type="checkbox" value="" id="CheckAll">
+                        </th>
+                        <th scope="col">Info Produk</th>
+                        <th scope="col"></th>
+                        <th scope="col">Statistik</th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Stok</th>
+                        <th scope="col">Aktif</th>
+                        <th scope="col">Aksi</th>
+                      </tr>
+                    </thead>
+
+                    {% for x in range(10) %}
+                    <tbody>
+                    <form action="" method="POST">
+                        <tr id="data_produk">
+                        <input type="hidden" name="id-produk" id="product-id" value="5">  
+
+                          <!-- Kolom Check Input -->
+                        <th scope="row">
+                            <input class="form-check-input" type="checkbox"id="check-id">
+                        </th>
+
+                        <!-- Kolom Gambar Produk -->
+                        <td class="col-1">
+                            <img class="rounded-3" src="/static/images/product/51622db3-f55c-4023-b961-3be3451b1cdc.jpg" alt="gambar-produk" width="80px">
+                        </td>
+
+                        <!-- Kolom Nama Produk -->
+                        <td class="col-3">
+                            <div class="row">                  
+                               <p class="px-0 fw-bold" style="font-size: 13px;">NAMA PRODUK  NAMA PRODUK   NAMA PRODUK   NAMA PRODUK   NAMA PRODUK</p>
+                            </div>
+                            <div class="row" style="font-size: 12px;">
+                                SKU : 
+                            </div>
+                        </td>
+
+                        <!-- Kolom Rating -->
+                        <td>
+                            <div class="ratings">
+                                <span class="product-rating">4.5</span><span>/5</span>
+                                <div class="stars">
+                                    <i class="material-symbols-outlined star-rate">star_rate</i>
+                                    <i class="material-symbols-outlined star-rate">star_rate</i>
+                                    <i class="material-symbols-outlined star-rate">star_rate</i>
+                                    <i class="material-symbols-outlined star-rate">star_rate_half</i>
+                                </div>
+                                <div class="rating-text">
+                                    <span>46 ratings & 15 reviews</span>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- Kolom Harga -->
+                        <td class="fs-6">Rp120.000</td>
+
+                        <!-- Kolom Stok -->
+                        <td id="stock-product">
+                            <input type="number" class="form-control form-control-sm stock-input" value="12" style="width: 55px;">
+                        </td>
+
+                        <!-- Kolom Aktif -->
+                        <td id="product-active">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input custom-switch" type="checkbox" role="switch" id="flexSwitchCheck" checked>
+                                <label class="form-label fs-6" for="flexSwitchCheckDefault">Active</label>
+                            </div>
+                        </td>
+
+                        <!-- Kolom Aksi -->
+                        <td>
+                            <a href=""><i class="material-symbols-outlined" style="color: #155724;">edit</i></a>
+                            <a href=""><i class="material-symbols-outlined" style="color: #721c24;">delete</i></a>
+                        </td>
+
+
+
+                      </tr>
+                    </form>
+                    <tbody>
+                    {% endfor %}
+                </table>
+               
+
+                <div class="container form-group d-flex justify-content-end mb-3 sticky-sm-bottom" >
+                    <button class="btn btn-success" id="btnSave" style="display: None;">Simpan</button>
+                </div>
+                
+            </div>
+    
+
+
+        </div>
+        <footer class="footer mt-5">
+            <div class="container-fluid">
+               <div class="footer-in">
+                  <p class="mb-0">&copy 2023 Urban Store . All Rights Reserved.</p>
+               </div>
+            </div>
+         </footer>
+    </div>
+    
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>      
+	<script src="https://kit.fontawesome.com/fa29c2884b.js" crossorigin="anonymous"></script>
+    <script src="\static\scripts\dashboard.js" defer></script>
+
+    <script>
+        $(document).ready(function(){
+	      $(".xp-menubar").on('click',function(){
+		    $("#sidebar").toggleClass('active');
+			$("#content").toggleClass('active');
+		  });
+		  
+		  $('.xp-menubar,.body-overlay').on('click',function(){
+		     $("#sidebar,.body-overlay").toggleClass('show-nav');
+		  });
+
+
+           // Mendeteksi perubahan pada input stok
+            $('.stock-input').on('input', function() {
+                $('#btnSave').show();
+            });
+
+             // Mendeteksi perubahan pada checkbox "Select All"
+            $('#CheckAll').on('change', function() {
+                // Menampilkan tombol simpan saat terjadi perubahan
+                $('#btnSave').show();
+            });
+
+            // Mendeteksi perubahan pada checkbox "Aktif"
+            $('.custom-switch input').on('change', function() {
+                console.log('simpan')
+                // Menampilkan tombol simpan saat terjadi perubahan
+                $('#btnSave').show();
+            });
+
+            // Mendeteksi perubahan pada checkbox individual
+            $('.form-check-input[id^="flexCheck"]').on('change', function() {
+                // Menampilkan tombol simpan saat terjadi perubahan
+                $('#btnSave').show();
+            });
+
+            // Mendeteksi klik tombol simpan
+            $('#btnSave').on('click', function() {
+                // Lakukan aksi simpan atau tindakan lainnya di sini
+                alert('Simpan data...');
+                // Setelah aksi selesai, sembunyikan kembali tombol simpan
+                $(this).hide();
+            });
+
+
+		  
+	    });
+
+        // function checkUncheckAll() {
+        //     var selectAllCheckbox = document.getElementById("selectAll");
+        //     var checkboxes = document.querySelectorAll(".form-check-input");
+
+        //     checkboxes.forEach(function(checkbox) {
+        // checkbox.checked = selectAllCheckbox.checked;
+        // });
+
+        function show_product() {
+            seller_id = $(seller_id).val()
+            $.ajax({
+                url: 'http://127.0.0.1:3000/get-data-cart/'+seller_id, 
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
