@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<link rel="stylesheet" href="/static/css/detail_product.css">
+
+{%endblock%}
+
+{%block body%}
+
+<input type="hidden" id="productId" value="{{ product_id }}">
+<input type="hidden" id="user_id" value="{{ user_id }}">
+<div class="d-flex justify-content-center" >
+    <div class="container mt-5">
+        <!-- Gambar Produk -->
+        <div class="row" id="detail-product-body">
+            <div class="col-md-4" id="image-detail">
+                <div class="container-img" id="container-img">
+                    
+                    
+                </div>
+            </div>
+
+            <div class="col-md-5" >
+
+                <!-- Detail Product -->
+                <div class="row" id="detail-product">
+
+                </div>
+                <!-- Detail Product End -->
+
+                <!-- Nama Toko  -->
+                <div class="row" id="nama-toko">
+                    
+                </div>
+                <hr class="my-4">  
+                <!-- Nama Toko End -->
+                
+            </div>
+
+            <!-- Card Info Jumlah Beli -->
+            <div class="col-md-3">
+                <div class="card shadow-sm" id="content-info">
+                    
+                    
+                </div>
+            </div>
+            <!-- Card Info Jumlah Beli End -->
+
+        </div>
+    </div>
+
+
+</div>
+
+
+{%endblock%}
+
+{%block scripts%}
+<script src="/static/scripts/detail_product.js"></script>
+
+
+{%endblock%}

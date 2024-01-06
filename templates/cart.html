@@ -1,0 +1,238 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<style>
+    #main-content {
+        min-height: 600px;
+    }
+
+    .img-product{
+        width: 100%;
+    }
+
+    .card-product{
+        width: 45rem;
+    }
+
+    .card-receipt{
+        width: 22rem;
+    }
+
+</style>
+
+{%endblock%}
+
+{%block body%}
+<input type="hidden" value="{{user_id}}" name="user_id" id="user_id">
+<div class="container mt-5" id="main-content">
+    <div class="d-flex mt-5 ms-4" style="margin-bottom: -5px;">
+        <h3 class="fw-bold mt-5">Keranjang</h3>
+    </div>
+
+    <div class="row">
+        <div class="container d-flex justify-content-start gap-4 mt-3 flex-wrap" id="daftar-produk">
+                <div class="col-auto" id="col-product"> </div>
+                <div class="col-auto ">
+                    <div class="card mt-3">
+                        <div class="card-body card-receipt">
+                            <p class="fs-5 fw-bold">Ringkasan Belanja</p>
+                            <div class="row px-0" id="col-price">
+                                
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer" style="background-color: white;">
+                            <div class="row">
+                                <div class="col-5">
+                                    <P class="fs-5 fw-bold">Total Harga</P>
+                                </div>
+                                <div class="col-7" id="col-total">
+                                    
+                                </div>
+                            </div>
+                            <div class="row mx-1 d-flex justify-content-center">
+                                <button class="btn btn-success" id="btn-checkout">Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <div class="row">
+            <div class="row mt-3 ">
+                <div class="col-7 d-flex justify-content-end">
+                    <button class="btn btn-danger" id="btn-delete" style="display: none;">Hapus</button>
+                </div>
+                <div class="col-md-3 "></div>  
+            </div>
+        </div>
+        
+    </div>
+
+
+
+</div>
+
+
+{%endblock%}
+
+{%block scripts%}
+<script>
+    const user_id = $('#user_id').val()
+    $(document).ready(function () {
+        show_cart(user_id)
+
+        $(document).on('change', '.checkbox', function() {
+            if ($(this).prop('checked')) {
+                $('#btn-delete').show();
+            } else {
+                $('#btn-delete').hide();
+            }
+
+            $('#btn-delete').on('click', function() {
+                var productsToDelete = [];
+                $('.checkbox:checked').each(function() {
+                    var productId = $(this).val()
+                    productsToDelete.push(productId);
+                });
+
+                if (productsToDelete.length > 0) {
+                    var deletedCount = 0;
+                    productsToDelete.forEach(function (productId) {
+                        console.log(user_id)
+                        $.ajax({
+                            url: 'http://127.0.0.1:3000/delete-cart/' + productId+'/'+user_id,
+                            method: 'DELETE',
+                            success: function (response) {
+                                deletedCount++;
+                                if (deletedCount === productsToDelete.length) {
+                                    // $('#alert-container').empty();
+                                    // $('#alert-container').append('<div class="alert alert-success" role="alert">Berhasil Menghapus Produk!</div>');
+                                    $('#col-product').empty()
+                                    show_cart(user_id)
+                                    $('#btn-delete').hide();
+                                }
+                            },
+                            error: function (error) {
+                                console.error('Gagal menghapus produk. Error:', error);
+                            }
+                        });
+                    })
+
+                } else {
+                    $('#alert-container').empty();
+                    $('#alert-container').append('<div class="alert alert-warning" role="alert">Tidak ada produk yang dipilih untuk dihapus!</div>');
+                }
+        });
+        });
+        
+
+    });
+
+
+    function show_cart(user_id) { 
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-data-cart/'+ user_id, 
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.length === 0 || !response[0].cart || response[0].cart.length === 0) {
+                    contentEmpty = `
+                    <div class="card card-product mt-3 d-flex">
+                            <div class="card-body">
+                                <p class="fs-5 fw-bold text-center">Keranjang Kosong</p>
+                            </div>
+                        </div>
+                    `;
+                $('#col-product').append(contentEmpty);
+                let contentPrice = `
+                        <div class="col-7">
+                            <p class="text-secondary">Total Harga (0 Barang)</p>
+                        </div>
+                        <div class="col-5" id="col-price">
+                            <p class="text-end">Rp0</p>
+                        </div>
+                `
+                $('#col-price').append(contentPrice)
+                $('#col-total').append(`<p class="fs-5 fw-bold text-end">Rp0</p>`)
+                $('#btn-checkout').attr('disabled', true);
+
+                return;
+            }
+
+
+                content = ''
+                let formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
+
+                // Menambilkan Data Barang
+                $.each(response[0]?.cart,function(index, cart) {
+                    content +=`
+                    <div class="row">
+                        <div class="card card-product mt-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-1 d-flex justify-content-center align-self-center px-1">
+                                        <input class="form-check-input checkbox" type="checkbox" value="${cart.product_id}" id="check-${cart.product_id}">
+                                    </div>
+                                    <div class="col-2 align-self-center">
+                                        <img class="rounded-3 img-product" src="/static/images/product/${cart.image}" >
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <p class="fw-semibold text-truncate">${cart.name}</p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="fw-semibold py-0">${formattedPrice.format(cart.price)}</p>
+                                        </div>
+                                        <div class="row">
+                                            <p>x${cart.quantity}</p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    `;
+                });
+                $('#col-product').append(content)
+                // $('#col-product').append(`
+                //     <div class="row mt-3 d-flex justify-content-end">
+                //         <div class="col-md-3 ">
+                //             <button class="btn btn-danger" id="btn-delete" style="display: none;" onclick="deleteCart()">Hapus</button>
+                //         </div>
+                //     </div>
+                // `)
+
+               
+                let contentPrice = `
+                        <div class="col-7">
+                            <p class="text-secondary">Total Harga (${response[2].quantityTotal} Barang)</p>
+                        </div>
+                        <div class="col-5" id="col-price">
+                            <p class="text-end">${formattedPrice.format((response[1].subtotal))}</p>
+                        </div>
+                `
+                $('#col-price').append(contentPrice)
+
+                $('#col-total').append(`<p class="fs-5 fw-bold text-end">${formattedPrice.format((response[1].subtotal))}</p>`)
+            }
+        });
+    }
+
+
+    function deleteCart() { 
+        var productsToDelete = [];
+        $('.checkbox:checked').each(function() {
+            var productId = $(this).val()
+            productsToDelete.push(productId);
+        });
+
+        console.log(productsToDelete)
+        
+    }
+    
+</script>
+
+{%endblock%}

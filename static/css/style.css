@@ -1,0 +1,36 @@
+
+
+body {
+    font-family: monserrat , sans-serif;
+}
+
+.navbar .navbar-brand {
+    font-family: monserrat, sans-serif;
+}
+
+.navbar .navbar-item {
+    font-family: monserrat, sans-serif;
+}
+
+
+a {
+    font-family: monserrat, sans-serif;
+    text-decoration: none;
+    color: black;
+}
+
+i {
+    font-family: monserrat, sans-serif;
+}
+
+.profil-content {
+    font-size: 15px;
+}
+
+#daySelect, #monthSelect, #yearSelect {
+    width: 100px; 
+}
+
+
+
+
