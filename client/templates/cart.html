@@ -18,7 +18,9 @@
         width: 22rem;
     }
 
+
 </style>
+<script type="text/javascript"src="https://app.sandbox.midtrans.com/snap/snap.js"data-client-key="SB-Mid-client-DG3O1SszFRlzErbv"></script>
 
 {%endblock%}
 
@@ -69,9 +71,27 @@
         
     </div>
 
-
-
 </div>
+
+<!-- MODAL ALAMAT -->
+<div class="modal fade" id="modal-alamat" tabindex="-1" aria-labelledby="modal-alamat" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header border-0 pt-4">
+                <h5 class="modal-title fs-5 fw-bold">Pilih Alamat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div id="daftar-alamat"></div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="btn-submit-alamat" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>  
+    </div>
+</div>  
 
 
 {%endblock%}
@@ -81,6 +101,17 @@
     const user_id = $('#user_id').val()
     $(document).ready(function () {
         show_cart(user_id)
+
+        // Event Tombol Checkout Di Klik 
+        $('#btn-checkout').on('click', function() {
+            // get_token_transkasi(user_id)
+            $('#modal-alamat').modal('show');
+            showAlamat(user_id)
+        });
+
+        // Event
+
+
 
         $(document).on('change', '.checkbox', function() {
             if ($(this).prop('checked')) {
@@ -106,8 +137,6 @@
                             success: function (response) {
                                 deletedCount++;
                                 if (deletedCount === productsToDelete.length) {
-                                    // $('#alert-container').empty();
-                                    // $('#alert-container').append('<div class="alert alert-success" role="alert">Berhasil Menghapus Produk!</div>');
                                     $('#col-product').empty()
                                     show_cart(user_id)
                                     $('#btn-delete').hide();
@@ -123,11 +152,11 @@
                     $('#alert-container').empty();
                     $('#alert-container').append('<div class="alert alert-warning" role="alert">Tidak ada produk yang dipilih untuk dihapus!</div>');
                 }
+            });
         });
-        });
-        
-
+    
     });
+
 
 
     function show_cart(user_id) { 
@@ -138,12 +167,14 @@
             success: function (response) {
                 if (response.length === 0 || !response[0].cart || response[0].cart.length === 0) {
                     contentEmpty = `
-                    <div class="card card-product mt-3 d-flex">
+                        <div class="card card-product mt-3 d-flex">
                             <div class="card-body">
                                 <p class="fs-5 fw-bold text-center">Keranjang Kosong</p>
                             </div>
                         </div>
                     `;
+
+                $('#col-product').empty()
                 $('#col-product').append(contentEmpty);
                 let contentPrice = `
                         <div class="col-7">
@@ -153,6 +184,8 @@
                             <p class="text-end">Rp0</p>
                         </div>
                 `
+                $('#col-price').empty()
+                $('#col-total').empty()
                 $('#col-price').append(contentPrice)
                 $('#col-total').append(`<p class="fs-5 fw-bold text-end">Rp0</p>`)
                 $('#btn-checkout').attr('disabled', true);
@@ -197,15 +230,7 @@
                     `;
                 });
                 $('#col-product').append(content)
-                // $('#col-product').append(`
-                //     <div class="row mt-3 d-flex justify-content-end">
-                //         <div class="col-md-3 ">
-                //             <button class="btn btn-danger" id="btn-delete" style="display: none;" onclick="deleteCart()">Hapus</button>
-                //         </div>
-                //     </div>
-                // `)
 
-               
                 let contentPrice = `
                         <div class="col-7">
                             <p class="text-secondary">Total Harga (${response[2].quantityTotal} Barang)</p>
@@ -214,8 +239,9 @@
                             <p class="text-end">${formattedPrice.format((response[1].subtotal))}</p>
                         </div>
                 `
+                $('#col-price').empty()
+                $('#col-total').empty()
                 $('#col-price').append(contentPrice)
-
                 $('#col-total').append(`<p class="fs-5 fw-bold text-end">${formattedPrice.format((response[1].subtotal))}</p>`)
             }
         });
@@ -231,6 +257,99 @@
 
         console.log(productsToDelete)
         
+    }
+
+    // Untuk Menampilkan Daftar Alamat User
+    function showAlamat(user_id) { 
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-alamat-user/' + user_id,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log(response)
+                const container = $('#daftar-alamat')
+                console.log(container)
+                $.each(response.alamat, function (index, alamat) {
+                    let  content = ''
+                    content += `    
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="row">
+                                    <p class="fw-bold">
+                                        ${alamat.nama_lengkap} 
+                                        <span class="fw-light">| ${alamat.no_telp}</span>
+                                    </p>
+                                </div>
+                                <div class="row">
+                                    <p class="text-secondary" id="alamat-test">${alamat.jalan}, ${alamat.kecamatan}, ${alamat.kota}, ${alamat.provinsi}, ${alamat.kode_pos}</p>
+                                </div>
+                            </div>
+                            <div class="col-2 d-flex align-items-center justify-content-between text-end">
+                                <button class="btn btn-success" onclick="get_token_transkasi(${user_id}, ${alamat.id_alamat}), $('#modal-alamat').modal('hide'), delete_all_cart(${user_id})">Pilih</button>
+                            </div>
+                        </div>
+                        <hr class="my-2">
+                    `;
+                    container.append(content)
+
+                });
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+
+    // Untuk memanggil midtrans
+    function get_token_transkasi(user_id, id_alamat) {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-data-cart/'+ user_id, 
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var productList = [];
+                var product_id = [];
+                var seller_list = [];
+                $.each(response[0]?.cart,function(index, cart) {
+                    var name = cart.name.split(' ').slice(0, 5).join(' ');
+                    productList.push({"id": cart.product_id, "price":cart.price, "quantity":cart.quantity, "name": name})
+                    seller_list.push(cart.seller_id)
+
+                });
+
+                // Fungsi Untuk Menghitung Subtotal
+                function hitungSubtotal(item) {
+                    var price = parseFloat(item.price);
+                    var quantity = parseInt(item.quantity);
+                    return price * quantity;
+                }
+                var total = 0; // Subtotal 
+                for (var i = 0; i < productList.length; i++) {
+                    total += hitungSubtotal(productList[i]);
+                }
+
+                $.ajax({
+                    url: 'http://127.0.0.1:3000/get-token-transaction/'+user_id+'/'+id_alamat,
+                    method : 'POST',
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify({ productData : productList, subtotal : total, sellerData : seller_list}),
+                    success: function (response) {
+                        window.snap.pay(response);
+                    }
+                });
+            },
+        });
+    }
+
+    function delete_all_cart(user_id) { 
+        $.ajax({
+            url: 'http://127.0.0.1:3000/delete-all-cart/'+ user_id, 
+            method: 'POST',
+            success: function (response) {
+                console.log("HAPUS: "+ response)
+            }
+        });
     }
     
 </script>

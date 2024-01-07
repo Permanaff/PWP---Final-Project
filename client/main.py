@@ -1,10 +1,21 @@
 from flask import Flask, render_template, session, request , redirect, url_for, flash, jsonify 
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 from werkzeug.utils import secure_filename
+from midtransclient import Snap, CoreApi
 import requests
 import os
+import json
 
 app = Flask(__name__)
+CORS(app)
+
+
+core = CoreApi(
+    is_production=False,
+    server_key= 'SB-Mid-server-MkWPtSUBmoSSOJ4UkdcyilCC',
+    client_key='SB-Mid-client-DG3O1SszFRlzErbv'
+)
 
 app.secret_key = '!@#$%'
 
@@ -32,8 +43,6 @@ def login():
         passwd = request.form['inpPass']
 
         cur = mysql.connection.cursor()
-        # cur.execute(" SELECT * FROM users WHERE users.email = %s AND users.password = %s;", (email, passwd))
-        # result = cur.fetchone()
 
         api_url = 'http://127.0.0.1:3000/login'
         api_data = {'email': email, 'password': passwd}
@@ -41,7 +50,6 @@ def login():
    
         if response.status_code == 200:
             data = response.json()
-            print(data)
 
             user_id = data[0]['user_id']
             username = data[0]['username']
@@ -67,7 +75,26 @@ def login():
         cur.close()
     else:
         return render_template('login.html')
+    
 
+@app.route('/daftar_toko', methods=["POST"])
+def daftar_toko() : 
+    nama_toko = request.form['inpNamaToko']
+    user_id = session['user_id']
+
+    api_url = 'http://127.0.0.1:3000/daftar-toko'
+    api_data = {'nama_toko': nama_toko, 'user_id': user_id}
+    response = requests.post(api_url, data=api_data)
+
+    if response.status_code == 200:
+        data = response.json()
+        session.pop('level_user', None)
+        session['level_user'] = data[0]['level_user']
+        session['seller_id'] = data[0]['seller_id']
+        
+    return redirect(url_for('home'))
+
+    
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -110,6 +137,10 @@ def account() :
 @app.route('/account/alamat-saya')
 def alamat_saya() : 
     return render_template('profile/alamat-saya.html',level_user=session['level_user'],  session = session['status'], name=session['username'], user_id=session['user_id'])  
+    
+@app.route('/account/riwayat-pembelian')
+def pembelian() : 
+    return render_template('profile/riwayat-pembelian.html',level_user=session['level_user'],  session = session['status'], name=session['username'], user_id=session['user_id'])  
 
 # =============================== PROFILE END =============================== 
 
@@ -150,6 +181,10 @@ def cart():
         return render_template('cart.html', user_id=session['user_id'], level_user=session['level_user'],  session = session['status'], name=session['username'])  
 
 
+@app.route('/after-payment')
+def after_payment():
+    return render_template('after-payment.html', user_id=session['user_id'], level_user=session['level_user'],  session = session['status'], name=session['username'])  
+
 
 # Untuk Mengmbil status session buat navbar
 @app.route('/get_user_status')
@@ -183,10 +218,8 @@ def receive_data():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], subfolder, filename)
             file.save(file_path)
 
-            print("SUKSES")
             return jsonify({'status': 'success', 'message': 'File received and saved successfully'})
         else:
-            print(" KURANG SUKSES")
             return jsonify({'status': 'error', 'message': 'Invalid file or file extension'})
     except Exception as e:
         print("ERROR COK")
@@ -196,6 +229,63 @@ def receive_data():
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/notification_handler', methods=['POST'])
+def notification_handler():
+    request_json = request.get_json()
+    transaction_status_dict = core.transactions.notification(request_json)
+
+    order_id           = request_json['order_id']
+    transaction_status = request_json['transaction_status']
+    fraud_status       = request_json['fraud_status']
+    transaction_json   = json.dumps(transaction_status_dict)
+
+    summary = 'Transaction notification received. Order ID: {order_id}. Transaction status: {transaction_status}. Fraud status: {fraud_status}.<br>Raw notification object:<pre>{transaction_json}</pre>'.format(order_id=order_id,transaction_status=transaction_status,fraud_status=fraud_status,transaction_json=transaction_json)
+
+    # [5.B] Handle transaction status on your backend
+    # Sample transaction_status handling logic
+    if transaction_status == 'capture':
+        if fraud_status == 'challenge':
+            # TODO set transaction status on your databaase to 'challenge'
+            cur = mysql.connection.cursor() 
+            cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+            mysql.connection.commit() 
+
+        elif fraud_status == 'accept':
+            # TODO set transaction status on your databaase to 'success'
+            cur = mysql.connection.cursor() 
+            cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+            mysql.connection.commit() 
+
+    elif transaction_status == 'settlement':
+        # TODO set transaction status on your databaase to 'success'
+        cur = mysql.connection.cursor() 
+        cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+        mysql.connection.commit() 
+        
+    elif transaction_status == 'cancel' or transaction_status == 'deny' or transaction_status == 'expire':
+        # TODO set transaction status on your databaase to 'failure'
+        cur = mysql.connection.cursor() 
+        cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+        mysql.connection.commit() 
+        
+    elif transaction_status == 'pending':
+        # TODO set transaction status on your databaase to 'pending' / waiting payment
+        cur = mysql.connection.cursor() 
+        cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+        mysql.connection.commit() 
+
+    elif transaction_status == 'refund':
+        # TODO set transaction status on your databaase to 'refund'
+        cur = mysql.connection.cursor() 
+        cur.execute("UPDATE transaksi SET status_transaksi = %s WHERE order_id = %s",(transaction_status, order_id,))
+        mysql.connection.commit() 
+
+    # app.logger.info(summary)
+    return jsonify(summary)
+
+
 
 
 

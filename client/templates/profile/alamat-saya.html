@@ -115,6 +115,11 @@
                                     shopping_cart
                                     </span></i>Keranjang</a>
                             </li>
+                            <li class="">
+                                <a href="/account/riwayat-pembelian" class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined"><span class="material-symbols-outlined">
+                                    shopping_bag
+                                    </span></i>Pembelian</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -308,7 +313,8 @@
             getKecamatan(id_kota, 'inpKec');
         });
 
-       
+
+    
 
         $('#btn-submit-alamat').on('click', function () {
             let nama_lengkap = $('#inpNama').val() 
@@ -319,7 +325,6 @@
             let kec = $('#inpKec').val()
             let kode_pos = $('#inpKode_pos').val()
 
-            console.log('kota'+city)
 
              // SAVE 
             $.ajax({

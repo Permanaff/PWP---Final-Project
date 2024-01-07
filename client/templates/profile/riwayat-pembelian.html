@@ -1,0 +1,283 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<style>
+    #main-content {
+        min-height: 293px;
+    }
+
+    a{
+	  cursor: pointer;
+	  
+  }
+
+    #sidebar ul li{
+	  padding:2px 0px;
+  }
+  
+   #sidebar ul li.active> a{
+	   color:#6d6a6a;
+   }
+   
+   
+   #sidebar ul li.active> a i{
+	    color:#6d6a6a;
+   }
+   
+    #sidebar ul li a:hover{
+        color:#939393;
+        background-color:#f3f4f5;
+    }
+
+    #sidebar ul li.dropdown{
+	   position:sticky;
+   }
+   
+   
+     #sidebar ul.component{
+		 padding:20px 0px;  
+	 }
+   
+   #sidebar ul li a{
+	   padding:5px 10px 5px 20px;
+	   line-height:30px;
+	   font-size:15px;
+	   position:relative;
+	   font-weight:400;
+	   display:block;
+	   color:#777777;
+	   text-transform:capitalize;
+   }
+   
+      #sidebar ul li a i{
+		  position:relative;
+		  margin-right:10px;
+		  top:6px;
+	  }
+
+      
+	   .dropdown-menu li > a{
+		  font-size:13px;
+		  padding:10px 20px;
+		  margin:0 5px;
+		  border-radius:2px;
+		  font-weight:400;
+		  transition:all 150ms linear;
+	  }
+	  
+	  
+	  .dropdown-menu li > a .material-symbols-outlined{
+		  position:relative;
+		  top:3px;
+		  color:#777;
+		  margin-right:6px;
+		  font-size:16px;
+		  
+	  } 
+
+      .custom-text { 
+        font-size: 14px;
+      }
+
+
+</style>
+{%endblock%}
+
+{%block body%}
+<input type="hidden" value="{{user_id}}" name="user_id" id="user_id">
+<div class="container mt-5" id="main-content">
+    <div class="row d-flex">
+        <div class="col-1"></div>
+        <!-- Side Bar -->
+        <div class="col-2">
+            <div class="card shadow border-0" style="height: 30rem;">
+                <div class="card-content">
+                    <div class="card-header mt-3" style="background-color: white;">
+                        <div class="row">
+                            <div class="col-auto align-self-center" id="image-sidebar"></div>
+                            <div class="col-auto align-self-center" id="nama-sidebar"></div>
+                        </div>
+
+                    </div>
+                    <div class="card-body" id="sidebar">
+                        <ul class="list-unstyled component m-0">
+                            <li class="dropdown active">
+                                <a href="#homeSubmenu1" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle active"><i class="material-symbols-outlined">person</i>Profil Anda
+                                </a>
+            
+                                <ul class="collapse list-unstyled menu" id="homeSubmenu1">
+                                    <li><a href="/account" id="profil-collapse">Profil</a></li>
+                                    <li><a href="/account/alamat-saya" id="alamat-collapse" class="active">Alamat</a></li>
+                                </ul>
+                            </li>
+                            <li class="">
+                                <a href="/cart" class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined"><span class="material-symbols-outlined">
+                                    shopping_cart
+                                    </span></i>Keranjang</a>
+                            </li>
+                            <li class="active">
+                                <a href="/account/riwayat-pembelian" class="dashboard" id="btnTokoAnda" ><i class="material-symbols-outlined"><span class="material-symbols-outlined">
+                                    shopping_bag
+                                    </span></i>Pembelian</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="col-8 px-5" id="content-main">
+            <!------------ CARD DAFTAR ALAMAT ------------>
+            <p class="fs-4 fw-bold">Riwayat Pembelian</p>
+            <div id="content-daftar-riwayat"></div>
+            <!-- <div class="card" id="content-daftar-riwayat">
+                <div class="card-content">
+                    <div class="card-header pb-0" style="background-color: white;">
+                        <p class="text-secondary">Order id :DG-495458432</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="container" id="content-card">
+                            <div class="row">
+                                <div class="col-2 pe-0">
+                                    <img class="rounded" src="/static/images/product/440c90b2-1c3b-4276-8805-6d095fe93d6d.jpg" width="100%">
+                                </div>
+                                <div class="col-7">
+                                    <p class="mb-0 fw-semibold">AAA</p>
+                                    <p class="mb-0">x5</p>
+                                </div>
+                                <div class="col-3 text-end align-self-center">
+                                    <p class="mb-0 fw-semibold">Rp 100.000</p>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!------------ CARD DAFTAR ALAMAT END ------------>
+
+        </div>
+       
+        <div class="col-1"></div>
+    </div>
+</div>  
+
+
+
+{%endblock%}
+
+{%block scripts%}
+
+<script>
+    const user_id = $('#user_id').val()
+    $(document).ready(function() {
+        get_data_riwayat(user_id)
+        setSidebarProfil()
+    });
+
+    function setSidebarProfil() {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-profile-data/' + user_id,
+            method: 'get',
+            dataType: 'json',
+            success: function (response) {
+                var userData = response.user[0];    
+                $('#image-sidebar').empty()
+                $('#nama-sidebar').empty()
+
+                $('#image-sidebar').append('<img class="rounded-circle" src="/static/images/profile_image/'+ userData.profile_image +'" alt="profile-image" style="width: 3rem;">')
+                $('#nama-sidebar').append('<p class="fw-semibold" style="font-size: 14px;">'+ userData.nama +'</p>')
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+
+    function get_data_riwayat(user_id) {
+        $.ajax({
+            url: 'http://127.0.0.1:3000/history_transaction_user/' + user_id,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var content = '';
+
+                $.each(response.riwayat, function (index, item) {
+                    content += `
+                        <div class="card mt-3" id="content-daftar-riwayat">
+                            <div class="card-content">
+                                <div class="card-header pb-0" style="background-color: white;">
+                                    <p class="text-secondary">Order id : ${item.order_id}</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="container" id="content-card">
+                    `;
+
+                    for (var i = 0; i < item.all_product_ids.length; i++) {
+                        content += `
+                            <div class="row">
+                                <div class="col-2 pe-0">
+                                    <img class="rounded" src="/static/images/product/${item.all_images[i]}" width="100%">
+                                </div>
+                                <div class="col-7">
+                                    <p class="mb-0 fw-semibold">${item.all_product_names[i]}</p>
+                                    <p class="mb-0">x5</p>
+                                </div>
+                                <div class="col-3 text-end align-self-center">
+                                    <p class="mb-0 fw-semibold">Rp ${item.all_prices[i]}</p>
+                                </div> 
+                            </div>
+                        `;
+                    }
+
+                    content += `
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="background-color: white;">
+                                <div class="row">
+                                    <div class="col-9"> 
+                                        <p class="fs-5 text-end">Subtotal</p>
+                                    </div>    
+                                    <div class="col-3"> 
+                                        <p class="fs-5 fw-bold text-end">Rp ${item.total_subtotal}</p>
+                                    </div>    
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                });
+
+                $('#content-daftar-riwayat').append(content);
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX request failed:", status, error);
+            }
+        });
+    }
+
+
+// if (response && response.riwayat) {
+//     response.riwayat.forEach(function (item) {
+//         console.log("Order ID: " + item.order_id);
+//         console.log("Customer Name: " + item.nama_customer);
+
+//         // Display 'all_product_ids' array
+//         console.log("Product IDs:");
+//         console.table(item.all_product_ids);
+
+//         // Display 'all_images' array
+//         console.log("Images:");
+//         console.table(item.all_images);
+
+//         console.log("\n");
+//     });
+// } else {
+//     console.error("Invalid response format.");
+// }
+
+    
+</script>
+
+{%endblock%}

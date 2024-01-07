@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+{% block head %}
+<title>Urban</title>
+<style>
+    #main-content {
+        min-height: 293px;
+    }
+</style>
+{%endblock%}
+
+{%block body%}
+<input type="hidden" name="user_id" id="user_id" value="{{user_id}}">
+<div id="main-content">
+    <div class="container d-flex justify-content-center mt-5">
+        <div class="card"  style="width: 1000px;">
+            <div class="card-content">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-2 align-self-center text-end" >
+                            <i class="material-symbols-outlined" style="color: #74c318; font-size: 5rem;">check_circle</i>
+                        </div>
+                        <div class="col-7 align-self-center text-start">
+                            <p class="fs-3 fw-light" style="color: #74c318;">PEMBAYARAN BERHASIL</p>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row mt-2 mb-0" id="keterangan-status"></div>
+                    <div class="row mt-0" id="ket-orderId"></div>
+
+                    <!-- <div class="row">
+                        <div class="card-body">
+                            <div class="row d-flex justify-content-center">
+                                <div class="row ms-2">
+                                    <div class="col-2 align-self-center">
+                                        <img class="rounded-3 img-product" src="/static/images/product/67c2679aba56d5cbcf1d32836d7a1480.jpeg" style="width: 7rem;">
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <p class="fw-semibold text-truncate">${cart.name}</p>
+                                        </div>
+                                        <div class="row">
+                                            <p class="fw-semibold py-0">${formattedPrice.format(cart.price)}</p>
+                                        </div>
+                                        <div class="row">
+                                            <p>x${cart.quantity}</p>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="row mt-3 mx-1">
+                        <a href="/" class="btn btn-success rounded-0">Kembali ke home</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+
+{%block scripts%}
+<script>
+    const user_id = $('#user_id').val() 
+
+    $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('order_id');
+        const transactionStatus = urlParams.get('transaction_status');
+
+        let formattedPrice = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
+
+        get_detail_transaksi(orderId)
+
+        $('#ket-orderId').append('<p class="fs-6 text-center">Order Id : '+ orderId +'</p>')
+        $('#keterangan-status').append('<p class="fs-5 text-center fw-bold">Terima kasih! Pembayaran anda telah diterima.</p>')
+
+    
+    });
+
+    function get_detail_transaksi(order_id) { 
+        $.ajax({
+            url: 'http://127.0.0.1:3000/get-data-transaksi/'+ order_id, 
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log(response)
+            }
+        });
+    }
+
+    function updateTerjual(order_id) {
+    $.ajax({
+        url: 'http://127.0.0.1:3000/update-terjual/'+order_id,
+        method: 'POST',  
+        success: function (response) {
+        }
+    }) 
+}
+
+    
+
+    
+
+
+</script>
+
+{%endblock%}

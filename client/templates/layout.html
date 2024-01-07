@@ -68,7 +68,7 @@
                                 <li><a class="dropdown-item no-style" href="/dashboard">Dashboard</a></li>
 
                                 {% elif level_user != 1 or level_user != 2 %}
-                                <li class="no-style"><button type="button" class="btn btn-primary border-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#modalToko">Daftar Toko</button></li>
+                                <li class="no-style"><button type="button" class="btn btn-primary border-0 dropdown-item" data-bs-toggle="modal" data-bs-target="#modalDaftarToko">Daftar Toko</button></li>
 
                                 {% endif %}
                                 <hr class="my-4 mt-1 mb-1">
@@ -87,6 +87,7 @@
                             <button type="submit" class="btn btn-danger fw-bold">Daftar</button>
                         </form>
                         {%endif%}
+                        <input type="hidden" id="level_user" name="level_user" value="{{level_user}}">
 
                         
 
@@ -163,7 +164,6 @@
                         <a id="text-login" href="{{url_for('register')}}">
                             <p  class="text-sm-end mt-2">Daftar</p>
                         </a>
-                        <!-- <p class="text-sm-end mt-2">Daftar</p> -->
                     </div>
                 </div>
                 <form action="{{url_for('login')}}" method="POST">
@@ -177,6 +177,39 @@
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary mt-4">Login</button>
+                    </div>                   
+                </form>
+            </div>  
+            <!-- Modal footer -->
+            <div class="modal-footer border-0"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDaftarToko">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row mb-4 mt-2">
+                    <div class="col-md-5">
+                        <h1 class="fs-2 fw-bold">Daftar Toko</h1>
+                    </div>
+                   
+                </div>
+                <form action="{{url_for('daftar_toko')}}" method="POST">
+                    <div class="mblank-3">
+                        <label class="form-label" id>Nama Toko</label>
+                        <input name="inpNamaToko"  id="inpNamaToko" type="text" class="form-control">
+                    </div>
+                    <div class="d-grid">
+                        <!-- <button type="button" class="btn btn-primary mt-4" id="btn-daftar">Daftar</button> -->
+                        <button type="submit" class="btn btn-primary mt-4">Daftar</button>
+
                     </div>                   
                 </form>
             </div>  
