@@ -13,8 +13,8 @@ CORS(app)
 
 core = CoreApi(
     is_production=False,
-    server_key= 'SB-Mid-server-MkWPtSUBmoSSOJ4UkdcyilCC',
-    client_key='SB-Mid-client-DG3O1SszFRlzErbv'
+    server_key= '<Your Server Key>',
+    client_key='<Yout Client Key>'
 )
 
 app.secret_key = '!@#$%'
