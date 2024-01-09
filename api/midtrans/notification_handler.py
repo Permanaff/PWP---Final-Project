@@ -9,8 +9,8 @@ import midtransclient
 # You can find it in Merchant Portal -> Settings -> Access keys
 api_client = midtransclient.CoreApi(
     is_production=False,
-    server_key='SB-Mid-server-MkWPtSUBmoSSOJ4UkdcyilCC',
-    client_key='SB-Mid-client-DG3O1SszFRlzErbv'
+    server_key='<Your Server Key>',
+    client_key='<Your Client Key>'
 )
 def notification_handler() : 
 
