@@ -9,7 +9,7 @@ import json
 snap = midtransclient.Snap(
     # Set to true if you want Production Environment (accept real transaction).
     is_production=False,
-    server_key='SB-Mid-server-MkWPtSUBmoSSOJ4UkdcyilCC'
+    server_key=' <Your Server Key>'
 )
 def get_token(customer_data, product_data, subtotal, user_address, seller_data, user_id) : 
     # Build API parameter
